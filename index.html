@@ -1,32 +1,46 @@
- <!DOCTYPE html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-<html lang="en">  
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8" />
-    <title>motion-camera</title>
-    <link rel="stylesheet" href="style.css" 
-    <meta name="description" content="...">
-    <meta name="author" content="...">
-    <!-- mobile viewport optimisation -->
-    <meta name="viewport" content="width=device-width,initial-scale=1">
- 
-    <!--[if lt IE 9]>  
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>  
-    <![endif]-->  </head>
+<title>Knee bends</title>
+<style>
+body {
+  background-color: #000;
+}
+#label {
+    color: #fff;
+    font-size: 40px;
+    font-family: Verdana;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 2000;
+}
+</style>
+</head>
 <body>
-    <header>...</header>
-    <nav>
-        <ul>...</ul>
-    </nav>
-    <article>
-        <section>
-        </section>
-    </article>
-    <footer>...</footer>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+<div id="label"><span id="count">0</span> knee <span id="bends">bends</span></div>
+<script src="/scripts/movement.js"></script>
+<script>
+(function () {
+    Movement.init({
+        movementChanged: function (m) {
+            processMovement(m);
+        }
+    });
+    var count = 0,
+        squat = false;
+    function processMovement(m) {
+        var moves = Movement.movements;
+        if (moves.RIGHT_ARM_UP === m) {
+            squat = true;
+        } else if (!moves.RIGHT_ARM_UP === m && squat) {
+            count += 1;
+            document.getElementById('count').innerHTML = count;
+            document.getElementById('bends').innerHTML = (count === 1) ? 'bend' : 'bends';
+            squat = false;
+        }
+    }
+}());
+</script>
 </body>
 </html>
